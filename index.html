@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08171a" />
+    <link rel="icon" type="image/svg+xml" href="/civicfix-mark.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="description" content="CivicFix helps communities report, track, and resolve local issues with clarity and accountability." />
+    <style>
+      html, body { min-height: 100%; margin: 0; background: #071417; color: #eff8f5; }
+      #root { min-height: 100vh; }
+      .boot-screen { min-height: 100vh; display: grid; place-items: center; padding: 24px; box-sizing: border-box; background: radial-gradient(ellipse at 18% 0%, #173c37 0%, #0a1b1e 43%, #071417 100%); font-family: system-ui, sans-serif; }
+      .boot-card { width: min(100%, 560px); box-sizing: border-box; padding: 28px; border: 1px solid rgba(198,250,124,.2); border-radius: 22px; background: rgba(13,32,35,.94); box-shadow: 0 24px 100px rgba(0,0,0,.3); }
+      .boot-brand { color: #c6fa7c; font-weight: 850; font-size: 23px; letter-spacing: -.06em; }
+      .boot-muted { color: #90a9a9; font-size: 13px; line-height: 1.65; }
+      .boot-bar { height: 3px; margin-top: 24px; overflow: hidden; border-radius: 4px; background: #183b37; }
+      .boot-bar i { display: block; width: 38%; height: 100%; border-radius: 4px; background: #c6fa7c; animation: civicfix-boot 1.5s ease-in-out infinite alternate; }
+      @keyframes civicfix-boot { from { transform: translateX(-15%); } to { transform: translateX(190%); } }
+      @media (prefers-reduced-motion: reduce) { .boot-bar i { animation: none; } }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <title>CivicFix — Better neighborhoods, together.</title>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot-screen">
+        <section class="boot-card">
+          <div class="boot-brand">CivicFix</div>
+          <p class="boot-muted">Starting your community workspace…</p>
+          <div class="boot-bar"><i></i></div>
+        </section>
+      </div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      (function () {
+        var root = document.getElementById('root');
+        function showStartupError(message) {
+          if (!root || root.dataset.civicfixMounted === 'ready' || root.dataset.civicfixMounted === 'failed') return;
+          root.dataset.civicfixMounted = 'failed';
+          root.innerHTML = '<main style="min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box;background:radial-gradient(ellipse at 18% 0%,#173c37 0%,#0a1b1e 43%,#071417 100%);font-family:system-ui,sans-serif;color:#eff8f5"><section style="width:min(100%,650px);box-sizing:border-box;padding:28px;border:1px solid rgba(198,250,124,.2);border-radius:22px;background:#0d2023"><div style="font-size:23px;font-weight:850;color:#c6fa7c">CivicFix</div><h1 style="font-size:30px">The app could not load</h1><p style="color:#b7cbc5;line-height:1.7">' + message + '</p><p style="color:#b7cbc5;line-height:1.8">Open the project folder in VS Code. Run <code>npm install</code>, then <code>npm run dev</code>, and open the localhost address shown by Vite. Do not open index.html directly.</p></section></main>';
+        }
+        window.addEventListener('error', function (event) {
+          if (event.target && event.target.tagName === 'SCRIPT') {
+            window.setTimeout(function () { showStartupError('The browser could not load the CivicFix JavaScript entry point. This can happen when dependencies are missing or when index.html is opened directly from your file manager.'); }, 0);
+          }
+        }, true);
+        window.setTimeout(function () {
+          if (root && root.querySelector('.boot-screen') && root.dataset.civicfixMounted !== 'ready') {
+            showStartupError('CivicFix is still waiting for its JavaScript modules. Check that Vite is running and that npm install completed successfully.');
+          }
+        }, 12000);
+      })();
+    </script>
+  </body>
+</html>
